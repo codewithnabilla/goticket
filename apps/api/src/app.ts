@@ -9,7 +9,7 @@ import express, {
 } from 'express';
 import cors from 'cors';
 import { PORT } from './config';
-import { SampleRouter } from './routers/sample.router';
+// import { SampleRouter } from './routers/sample.router';
 import { AuthRouter } from './routers/auth.router';
 
 export default class App {
@@ -54,14 +54,14 @@ export default class App {
   //define routes from router directory
 
   private routes(): void {
-    const sampleRouter = new SampleRouter();
+    // const sampleRouter = new SampleRouter();
     const authRouter = new AuthRouter();
 
     this.app.get('/', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student !`);
     });
 
-    this.app.use('/samples', sampleRouter.getRouter());
+    // this.app.use('/samples', sampleRouter.getRouter());
     this.app.use('/auth', authRouter.getRouter());
   }
 
