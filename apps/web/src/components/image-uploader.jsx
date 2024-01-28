@@ -1,4 +1,3 @@
-'use client';
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -6,11 +5,11 @@ function ImageUploader({ setImageUrl }) {
   const [message, setMessage] = useState('');
 
   const handleFormSubmit = async (event) => {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
 
     const formData = new FormData();
     const fileInput = document.getElementById('imageInput');
-    const file = fileInput.files[0]; // Get the file selected by the user
+    const file = fileInput.files[0];
 
     if (!file) {
       alert('Please select an image to upload.');
@@ -20,15 +19,15 @@ function ImageUploader({ setImageUrl }) {
     formData.append('image', file);
 
     try {
-      const response = await axios.post('/upload', formData, {
+      const response = await axios.post('/api/save-event-data', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
-      if (response.data.message) {
-        setMessage(response.data.message);
-        setImageUrl(response.data.imageUrl); // Assuming the server returns the imageUrl
+      if (response.data.success) {
+        setMessage('Event data and image uploaded successfully');
+        setImageUrl(response.data.event.imgUrl);
       }
     } catch (error) {
       console.error('Error:', error);
