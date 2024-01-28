@@ -7,15 +7,56 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = "mysql://root:root@localhost:3306/goticket"
 }
 
-model Sample {
-  id        Int      @id @default(autoincrement())
-  name      String
-  code      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
-  @@map("samples") // if you want to use snake_case format
+model User {
+  id             Int             @id @default(autoincrement())
+  username      String          @unique
+  email          String          @unique
+  password       String
+  referral_code  String
+  role           Role            @default(participant)
+  created_at     DateTime        @default(now())
+  referrerPoints ReferralPoint[] @relation("ReferrerToReferralPoint")
+  referredPoints ReferralPoint[] @relation("ReferredToReferralPoint")
+  couponsEvent   Coupons[]
+  // transactions   Transaction[]
+  // reviews        Review[]
+}
+
+
+
+model ReferralPoint {
+  id              Int      @id @default(autoincrement())
+  referrer_id     Int     
+  referred_id     Int
+  points          Int      @default(10000)
+  claim_points    Boolean  @default(false)
+  created_at      DateTime @default(now())
+  expiration_date DateTime
+  referrer        User     @relation("ReferrerToReferralPoint", fields: [referrer_id], references: [id])
+  referred        User     @relation("ReferredToReferralPoint", fields: [referred_id], references: [id])
+}
+
+model Coupons {
+  id              Int           @id @default(autoincrement())
+  user_id         Int?
+  event_id        Int?
+  name            String
+  discount_amount Int
+  is_used         Boolean       @default(false)
+  usage_limit     Int
+  created_at      DateTime      @default(now())
+  expiration_date DateTime
+  user            User?         @relation(fields: [user_id], references: [id])
+  // event           Event?        @relation(fields: [event_id], references: [id])
+  // transaction     Transaction[]
+}
+
+
+enum Role {
+  participant
+  organizer
 }
