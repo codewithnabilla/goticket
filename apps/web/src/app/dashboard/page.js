@@ -5,7 +5,7 @@ export default function Transactions() {
     <>
       <div className="flex">
         <Sidebar />
-        <h1>Welcome to Dashboard</h1>
+        <h1>Welcome to Dashboard, username</h1>
       </div>
     </>
   );

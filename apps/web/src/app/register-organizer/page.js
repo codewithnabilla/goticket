@@ -10,12 +10,15 @@ export default function registerPage() {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/auth/register', {
-        username: formik.values.username,
-        email: formik.values.email,
-        password: formik.values.password,
-        referral_code: formik.values.referralCode,
-      });
+      const response = await axios.post(
+        'http://localhost:8000/auth/register-organizer',
+        {
+          username: formik.values.username,
+          email: formik.values.email,
+          password: formik.values.password,
+          referral_code: formik.values.referralCode,
+        },
+      );
       router.push('/login');
       if (response.status === 200) {
         console.log('register account is success');
@@ -31,7 +34,7 @@ export default function registerPage() {
       email: '',
       password: '',
       referralCode: '',
-      role: 'participant',
+      role: 'organizer',
     },
     validationSchema: validateRegister,
     onSubmit: (values) => {
@@ -196,7 +199,7 @@ export default function registerPage() {
       </div>
       <div className="flex flex-col align-center justify-center">
         <Image
-          src="/12.jpg"
+          src="/13.jpg"
           alt="event"
           width={2000}
           height={2000}
@@ -204,15 +207,15 @@ export default function registerPage() {
         />
         <div className="flex flex-col items-center mx-auto">
           <p className="block text-lg font-semibold leading-6 text-gray-600 mt-2 mb-1">
-            Do you want to create your own event?
+            Not an organizer?
           </p>
           <p className="block text-lg leading-6 text-gray-500">
             Register as{' '}
             <a
-              href="/register-organizer"
+              href="/register"
               className="font-bold text-red-500 hover:text-red-800"
             >
-              organizer
+              participant
             </a>
           </p>
         </div>
