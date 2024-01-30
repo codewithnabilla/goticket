@@ -19,11 +19,11 @@ export const regisValidation = [
       'Password must contain min 8 letters, with min 1 lowercase, 1 uppercase, and 1 symbol',
     ),
   (req: Request, res: Response, next: NextFunction) => {
-    const errorValidator = validationResult(req); // untuk menampung jika ada error dari middleware validator
+    const errorValidator = validationResult(req); 
     if (!errorValidator.isEmpty()) {
-      // jika errorValidator tidak kosong maka akan dikirimkan response sebagai error
+     
       return res.status(400).send({ error: errorValidator.array() });
     }
-    next(); // jika error validator kosong maka lanjut ke controller resgister
+    next(); // 
   },
 ];

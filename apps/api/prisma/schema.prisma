@@ -7,16 +7,15 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:root@localhost:3306/goticket"
+  url      = "mysql://root:hamidah5@localhost:3306/goticket"
 }
-
 
 model User {
   id             Int             @id @default(autoincrement())
-  username      String          @unique
+  username       String
   email          String          @unique
   password       String
-  referral_code  String
+  referral_code  String?
   role           Role            @default(participant)
   created_at     DateTime        @default(now())
   referrerPoints ReferralPoint[] @relation("ReferrerToReferralPoint")
@@ -26,11 +25,21 @@ model User {
   // reviews        Review[]
 }
 
-
+model Event {
+  id          Int      @id @default(autoincrement())
+  eventTitle  String
+  organizer   String
+  eventType   String
+  location    String
+  dateAndTime DateTime
+  price       String
+  description String
+  imgUrl      String?
+}
 
 model ReferralPoint {
   id              Int      @id @default(autoincrement())
-  referrer_id     Int     
+  referrer_id     Int
   referred_id     Int
   points          Int      @default(10000)
   claim_points    Boolean  @default(false)
@@ -41,20 +50,19 @@ model ReferralPoint {
 }
 
 model Coupons {
-  id              Int           @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   user_id         Int?
   event_id        Int?
   name            String
   discount_amount Int
-  is_used         Boolean       @default(false)
+  is_used         Boolean  @default(false)
   usage_limit     Int
-  created_at      DateTime      @default(now())
+  created_at      DateTime @default(now())
   expiration_date DateTime
-  user            User?         @relation(fields: [user_id], references: [id])
+  user            User?    @relation(fields: [user_id], references: [id])
   // event           Event?        @relation(fields: [event_id], references: [id])
   // transaction     Transaction[]
 }
-
 
 enum Role {
   participant
