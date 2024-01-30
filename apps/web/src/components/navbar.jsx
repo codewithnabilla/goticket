@@ -1,4 +1,5 @@
 'use client';
+
 import { Menu, Search, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -46,29 +47,19 @@ export default function Navbar() {
       </div>
       <div class="flex-1 w-32 ">
         <div className="hidden md:flex">
-          <div className="flex-auto ">
-            <Link className="hover:underline" href="/find-events">
-              Find Events
-            </Link>
-          </div>
-          <div className="flex-auto">
-            <Link className="hover:underline" href="/create-events">
-              Create Events
-            </Link>
-          </div>
           <div className="flex-auto">
             <Link className="hover:underline" href="/event-list">
               Event List
             </Link>
           </div>
           <div className="flex-auto ">
-            <Link className="hover:underline" href="/">
+            <Link className="hover:underline" href="/login">
               Log In
             </Link>
           </div>
 
           <div className="flex-auto ">
-            <Link className="hover:underline" href="/">
+            <Link className="hover:underline" href="/register">
               Sign Up
             </Link>
           </div>

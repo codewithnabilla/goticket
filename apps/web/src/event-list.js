@@ -1,7 +1,7 @@
 const eventList = [
   {
     id: 1,
-    img: '/1.jpg',
+    img: '/1a.jpg',
     title: 'INCUBUS ASIA TOUR',
     alt: 'INCUBUS',
     date: '23 April 2024',
@@ -10,7 +10,7 @@ const eventList = [
   },
   {
     id: 2,
-    img: '/2.jpg',
+    img: '/2a.jpg',
     title: 'URBANISME SHOWCASE BY EAR SUN',
     alt: 'URBANISME SHOWCASE BY EAR SUN',
     date: '23 Juni 2024',

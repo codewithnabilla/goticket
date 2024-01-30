@@ -71,14 +71,14 @@ export default function loginPage() {
                   >
                     Password
                   </label>
-                  <div className="text-sm">
+                  {/* <div className="text-sm">
                     <a
                       href="/forgotpassword"
                       className="font-semibold text-red-500 hover:text-red-800"
                     >
                       Forgot password?
                     </a>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="mt-2">
                   <input
@@ -118,7 +118,7 @@ export default function loginPage() {
           </div>
         </div>
         <Image
-          src="/1.jpg"
+          src="/11.jpg"
           alt="event"
           width={2000}
           height={2000}

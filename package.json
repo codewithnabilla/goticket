@@ -34,5 +34,8 @@
     "hooks": {
       "pre-commit": "npx lint-staged"
     }
+  },
+  "dependencies": {
+    "lucide-react": "^0.319.0"
   }
 }
