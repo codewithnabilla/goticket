@@ -1,34 +1,111 @@
 // import { Request, Response } from 'express';
-// import prisma from '@/prisma';
+// import { PrismaClient } from '../../prisma/prisma/client';
+// // import multer from 'multer';
+// // import path from 'path';
 
-// export class SampleController {
-//   async getSampleData(req: Request, res: Response) {
-//     const sampleData = await prisma.sample.findMany();
+// const prisma = new PrismaClient();
 
-//     return res.status(200).send(sampleData);
-//   }
+// // const storage = multer.diskStorage({
+// //   destination: function (
+// //     req: Request,
+// //     file: Express.Multer.File,
+// //     cb: Function,
+// //   ) {
+// //     cb(null, 'apps/web/public');
+// //   },
+// //   filename: function (req: Request, file: Express.Multer.File, cb: Function) {
+// //     cb(
+// //       null,
+// //       file.fieldname + '-' + Date.now() + path.extname(file.originalname),
+// //     );
+// //   },
+// // });
 
-//   async getSampleDataById(req: Request, res: Response) {
-//     const { id } = req.params;
+// // const upload = multer({
+// //   storage: storage,
+// // }).single('image');
 
-//     const sample = await prisma.sample.findUnique({
-//       where: { id: Number(id) },
+// export const saveEventData = async (req: Request, res: Response) => {
+//   const {
+//     eventTitle,
+//     organizer,
+//     eventType,
+//     location,
+//     dateAndTime,
+//     price,
+//     description,
+//     imgUrl,
+//   } = req.body;
+
+//   try {
+//     const savedEvent = await prisma.event.create({
+//       data: {
+//         eventTitle,
+//         organizer,
+//         eventType,
+//         location,
+//         dateAndTime: new Date(dateAndTime),
+//         price,
+//         description,
+//         imgUrl,
+//       },
 //     });
-
-//     if (!sample) {
-//       return res.send(404);
-//     }
-
-//     return res.status(200).send(sample);
+//     console.log('Event data saved', savedEvent);
+//     res.json({ success: true });
+//   } catch (error) {
+//     console.error('Error fetching events:', error);
+//     res.status(500).json({ succes: false, error: 'Internal Server Error' });
 //   }
 
-//   async createSampleData(req: Request, res: Response) {
-//     const { name, code } = req.body;
+//   //   upload(req, res, async (err: any) => {
+//   //     if (err) {
+//   //       console.error(err);
+//   //       return res.status(500).json({ error: err.message });
+//   //     }
 
-//     const newSampleData = await prisma.sample.create({
-//       data: { name, code },
-//     });
+//   //     if (!req.file) {
+//   //       return res.status(400).json({ error: 'No file uploaded' });
+//   //     }
 
-//     return res.status(201).send(newSampleData);
+//   //     try {
+//   //       const {
+//   //         eventTitle,
+//   //         organizer,
+//   //         eventType,
+//   //         location,
+//   //         dateAndTime,
+//   //         price,
+//   //         description,
+//   //         imgUrl,
+//   //       } = req.body;
+//   //       const imageUrl = `/images/${req.file.filename}`;
+//   //       const savedEvent = await prisma.event.create({
+//   //         data: {
+//   //           eventTitle,
+//   //           organizer,
+//   //           eventType,
+//   //           location,
+//   //           dateAndTime: new Date(dateAndTime),
+//   //           price,
+//   //           description,
+//   //           imgUrl: imageUrl,
+//   //         },
+//   //       });
+
+//   //       console.log('Event data saved', savedEvent);
+//   //       res.json({ success: true, event: savedEvent });
+//   //     } catch (error) {
+//   //       console.error('Error saving event data:', error);
+//   //       res.status(500).json({ success: false, error: 'Internal Server Error' });
+//   //     }
+//   //   });
+// };
+// export const getAllEvents = async (req: Request, res: Response) => {
+//   try {
+//     const event = await prisma.event.findMany();
+//     res.json({ event });
+//   } catch (error) {
+//     console.error('Error saving event data:', error);
+//     res.status(500).json({ success: false, error: 'Internal Server Error' });
 //   }
-// }
+// };

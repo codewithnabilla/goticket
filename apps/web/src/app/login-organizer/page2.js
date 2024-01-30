@@ -2,24 +2,26 @@
 import Image from 'next/image';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 
-export default function loginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+import { useFormik } from 'formik';
+import { validateLogin } from '../lib/validate';
 
+export default function loginPageOrganizer() {
   const router = useRouter();
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/auth/login', {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        'http://localhost:8000/auth/login-organizer',
+        {
+          email: email,
+          password: password,
+        },
+      );
 
       if (response.status === 200) {
         const { token } = response.data;
         localStorage.setItem('token', token);
-        router.push('/');
+        router.push('/dashboard');
         console.log('log in account is success');
       }
     } catch (error) {
@@ -27,6 +29,16 @@ export default function loginPage() {
     }
   };
 
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: validateLogin,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
   return (
     <main>
       <div className="grid grid-cols-2 center m-auto">
@@ -41,56 +53,68 @@ export default function loginPage() {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6">
+            <form onSubmit={formik.handleSubmit} className="space-y-6">
               <div>
                 <label
-                  for="emailForm"
+                  htmlFor="email"
                   className="block text-sm font-medium text-gray-900"
                 >
                   Email address
                 </label>
                 <div className="mt-2">
                   <input
-                    value={email}
                     id="email"
                     name="email"
                     type="email"
                     autoComplete="email"
-                    className="pl-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className={`pl-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${
+                      formik.errors.email &&
+                      formik.touched.email &&
+                      'border-red-500'
+                    }`}
                     placeholder="Enter your email address"
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.email}
                   />
+                  {formik.touched.email && formik.errors.email ? (
+                    <div className="text-xs text-red-500 mt-2">
+                      {formik.errors.email}
+                    </div>
+                  ) : null}
                 </div>
               </div>
 
               <div>
                 <div className="flex items-center justify-between">
                   <label
-                    for="passwordForm"
+                    htmlFor="password"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
                     Password
                   </label>
-                  {/* <div className="text-sm">
-                    <a
-                      href="/forgotpassword"
-                      className="font-semibold text-red-500 hover:text-red-800"
-                    >
-                      Forgot password?
-                    </a>
-                  </div> */}
                 </div>
                 <div className="mt-2">
                   <input
-                    value={password}
                     id="password"
                     name="password"
                     type="password"
                     autoComplete="current-password"
                     placeholder="Enter your password"
-                    className="pl-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setPassword(e.target.value)}
+                    className={`pl-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 ${
+                      formik.errors.password &&
+                      formik.touched.password &&
+                      'border-red-500'
+                    }`}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.password}
                   />
+                  {formik.touched.password && formik.errors.password ? (
+                    <div className="text-xs text-red-500 mt-2">
+                      {formik.errors.password}
+                    </div>
+                  ) : null}
                 </div>
               </div>
 

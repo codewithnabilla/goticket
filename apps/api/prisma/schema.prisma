@@ -13,10 +13,10 @@ datasource db {
 
 model User {
   id             Int             @id @default(autoincrement())
-  username      String          @unique
+  username      String         
   email          String          @unique
   password       String
-  referral_code  String
+  referral_code  String?
   role           Role            @default(participant)
   created_at     DateTime        @default(now())
   referrerPoints ReferralPoint[] @relation("ReferrerToReferralPoint")
@@ -26,7 +26,17 @@ model User {
   // reviews        Review[]
 }
 
-
+model Event {
+  id          Int      @id @default(autoincrement())
+  eventTitle  String
+  organizer   String
+  eventType   String
+  location    String
+  dateAndTime DateTime
+  price       String
+  description String
+  imgUrl      String?
+}
 
 model ReferralPoint {
   id              Int      @id @default(autoincrement())

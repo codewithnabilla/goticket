@@ -19,7 +19,7 @@ export default function loginPage() {
       if (response.status === 200) {
         const { token } = response.data;
         localStorage.setItem('token', token);
-        router.push('/');
+        router.push('/dashboard');
         console.log('log in account is success');
       }
     } catch (error) {
@@ -71,14 +71,14 @@ export default function loginPage() {
                   >
                     Password
                   </label>
-                  {/* <div className="text-sm">
+                  <div className="text-sm">
                     <a
                       href="/forgotpassword"
                       className="font-semibold text-red-500 hover:text-red-800"
                     >
                       Forgot password?
                     </a>
-                  </div> */}
+                  </div>
                 </div>
                 <div className="mt-2">
                   <input

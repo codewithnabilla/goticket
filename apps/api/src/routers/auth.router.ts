@@ -18,7 +18,13 @@ export class AuthRouter {
       regisValidation,
       this.authController.registerUser,
     );
+    this.router.post(
+      '/register-organizer',
+      regisValidation,
+      this.authController.registerOrganizer,
+    );
     this.router.post('/login', this.authController.loginUser);
+    this.router.post('/login-organizer', this.authController.loginOrganizer);
   }
 
   getRouter(): Router {
