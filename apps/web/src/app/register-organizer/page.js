@@ -17,9 +17,10 @@ export default function registerPage() {
           email: formik.values.email,
           password: formik.values.password,
           referral_code: formik.values.referralCode,
+          role: 'organizer',
         },
       );
-      router.push('/login');
+      router.push('/login-organizer');
       if (response.status === 200) {
         console.log('register account is success');
       }

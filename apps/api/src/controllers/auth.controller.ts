@@ -221,4 +221,38 @@ export class AuthController {
       return res.status(500).send('Invalid email or password');
     }
   }
+
+  async loginOrganizer(req: Request, res: Response, next: NextFunction) {
+    try {
+      const loginOrganizer = await prisma.user.findUnique({
+        where: { email: req.body.email },
+      });
+      if (!loginOrganizer) {
+        throw new Error('Invalid email or password');
+      }
+      const jwtToken = sign(
+        {
+          id: loginOrganizer.id,
+          role: loginOrganizer.role,
+          email: loginOrganizer.email,
+        },
+        'goticket123',
+      );
+      const isValidPassword = await compare(
+        req.body.password,
+        loginOrganizer.password,
+      );
+      if (!isValidPassword) {
+        throw new Error('Invalid passowrd');
+      }
+      return res.status(200).send({
+        username: loginOrganizer.username,
+        email: loginOrganizer.email,
+        token: jwtToken,
+      });
+    } catch (error: any) {
+      console.log(error);
+      return res.status(500).send('Invalid email or password');
+    }
+  }
 }

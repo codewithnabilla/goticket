@@ -6,19 +6,22 @@ import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import { validateLogin } from '../lib/validate';
 
-export default function loginPage() {
+export default function loginPageOrganizer() {
   const router = useRouter();
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/auth/login', {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        'http://localhost:8000/auth/login-organizer',
+        {
+          email: email,
+          password: password,
+        },
+      );
 
       if (response.status === 200) {
         const { token } = response.data;
         localStorage.setItem('token', token);
-        router.push('/');
+        router.push('/dashboard');
         console.log('log in account is success');
       }
     } catch (error) {

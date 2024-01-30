@@ -24,6 +24,7 @@ export class AuthRouter {
       this.authController.registerOrganizer,
     );
     this.router.post('/login', this.authController.loginUser);
+    this.router.post('/login-organizer', this.authController.loginOrganizer);
   }
 
   getRouter(): Router {
