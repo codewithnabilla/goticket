@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:hamidah5@localhost:3306/goticket"
+  url      = "mysql://root:root@localhost:3306/goticket"
 }
 
 model User {
@@ -23,10 +23,12 @@ model User {
   couponsEvent   Coupons[]
   // transactions   Transaction[]
   // reviews        Review[]
+  event Event[]
 }
 
 model Event {
   id          Int      @id @default(autoincrement())
+  organizer_id Int      
   eventTitle  String
   organizer   String
   eventType   String
@@ -35,6 +37,8 @@ model Event {
   price       String
   description String
   imgUrl      String?
+
+  orgaizerid User @relation(fields: [organizer_id], references: [id])
 }
 
 model ReferralPoint {

@@ -1,4 +1,5 @@
 'use client';
+import 'tailwindcss/tailwind.css';
 import Image from 'next/image';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';

@@ -1,9 +1,34 @@
+'use client';
 import Sidebar from '@/app/components/sidebar';
 import { Menu, Search, X } from 'lucide-react';
 import 'tailwindcss/tailwind.css';
-import Link from 'next/link';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 
-export default function Events() {
+const EventsList = () => {
+  const [event, setEvent] = useState([]);
+
+  const fetchEvents = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
+      const response = await axios.get(
+        'http://localhost:8000/events/organizer',
+        {
+          headers: headers,
+        },
+      );
+
+      const fetchedData = response.data;
+      setEvent(fetchedData);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
   return (
     <>
       <div className="flex">
@@ -43,109 +68,62 @@ export default function Events() {
                     <thead>
                       <tr>
                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-md font-semibold text-gray-100 uppercase tracking-wider">
-                          Date
-                        </th>
-                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-md font-semibold text-gray-100 uppercase tracking-wider">
                           Event
                         </th>
                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-md font-semibold text-gray-100 uppercase tracking-wider">
-                          Sold
+                          Organizer
                         </th>
                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-md font-semibold text-gray-100 uppercase tracking-wider">
-                          Gross
+                          Location
+                        </th>
+                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-red-500 text-left text-md font-semibold text-gray-100 uppercase tracking-wider">
+                          Price
                         </th>
                         <th className="px-5 py-3 border-b-2 border-red-200 bg-red-500 text-left text-md font-semibold text-gray-100 uppercase tracking-wider">
-                          Status
+                          Date
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p className="text-gray-900 whitespace-no-wrap">
-                            Jan 1, 2024
-                          </p>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p className="text-gray-900 whitespace-no-wrap">
-                            Event A
-                          </p>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p className="text-gray-900 whitespace-no-wrap">
-                            100
-                          </p>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p className="text-gray-900 whitespace-no-wrap">
-                            Rp200.000,00
-                          </p>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <p className="text-gray-900 whitespace-no-wrap">
-                            Available
-                          </p>
-                        </td>
-                      </tr>
+                      {event.map((event) => (
+                        <tr key={event.id}>
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p className="text-gray-900 whitespace-no-wrap">
+                              {event.eventTitle}
+                            </p>
+                          </td>
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p className="text-gray-900 whitespace-no-wrap">
+                              {event.organizer}
+                            </p>
+                          </td>
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p className="text-gray-900 whitespace-no-wrap">
+                              {event.location}
+                            </p>
+                          </td>
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p className="text-gray-900 whitespace-no-wrap">
+                              {event.price}
+                            </p>
+                          </td>
+                          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                            <p className="text-gray-900 whitespace-no-wrap">
+                              {new Date(event.dateAndTime).toLocaleString()}
+                            </p>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
-                  <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
-                    <span className="text-xs xs:text-sm text-gray-900">
-                      Showing 1 to 4 of 50 Entries
-                    </span>
-                    <div className="inline-flex mt-2 xs:mt-0">
-                      <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l">
-                        Prev
-                      </button>
-                      <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r">
-                        Next
-                      </button>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-        {/* <div classNameName="flex flex-col mx-auto">
-          <p classNameName="font-bold text-3xl my-10 mx-auto text-red-600">
-            Your Events
-          </p>
-          <div className="overflow-x-auto">
-            <table className="table-auto min-w-full border-collapse border border-gray-200">
-              <thead className="bg-red-500">
-                <tr>
-                  <th className="px-4 py-2 text-base font-semibold text-gray-100 uppercase">
-                    Date
-                  </th>
-                  <th className="px-4 py-2 text-base font-semibold text-gray-100 uppercase">
-                    Event
-                  </th>
-                  <th className="px-4 py-2 text-base font-semibold text-gray-100 uppercase">
-                    Sold
-                  </th>
-                  <th className="px-4 py-2 text-base font-semibold text-gray-100 uppercase">
-                    Gross
-                  </th>
-                  <th className="px-4 py-2 text-base font-semibold text-gray-100 uppercase">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                <tr>
-                  <td className="px-4 py-2 whitespace-nowrap">Jan 1, 2024</td>
-                  <td className="px-4 py-2 whitespace-nowrap">Event A</td>
-                  <td className="px-4 py-2 whitespace-nowrap">100</td>
-                  <td className="px-4 py-2 whitespace-nowrap">Rp20.000,00</td>
-                  <td className="px-4 py-2 whitespace-nowrap">Sold Out</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div> */}
       </div>
     </>
   );
-}
+};
+
+export default EventsList;

@@ -12,10 +12,13 @@ export default function loginPage() {
   const router = useRouter();
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/auth/login', {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        'http://localhost:8000/auth/login-organizer',
+        {
+          email: email,
+          password: password,
+        },
+      );
 
       if (response.status === 200) {
         const { token } = response.data;
